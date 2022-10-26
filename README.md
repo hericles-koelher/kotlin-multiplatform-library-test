@@ -1,0 +1,1 @@
+Um cliente HTTP Android/iOS para api do Driver Analytics feito em Kotlin.
