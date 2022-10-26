@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("multiplatform") version "1.7.20"
+    id("maven-publish")
 }
 
 group = "ai.motora"
