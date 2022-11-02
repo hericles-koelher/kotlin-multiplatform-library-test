@@ -1,7 +1,8 @@
 plugins {
+    id("maven-publish")
     id("com.android.library")
     kotlin("multiplatform") version "1.7.20"
-    id("maven-publish")
+    kotlin("plugin.serialization") version "1.7.20"
 }
 
 group = "ai.motora"
@@ -17,7 +18,7 @@ android {
     compileSdk = 32
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 21
+        minSdk = 16
         targetSdk = 32
     }
 }
@@ -37,20 +38,23 @@ kotlin {
     }
 
     sourceSets {
-        val ktor_version = "2.1.2"
-        val napier_version = "2.6.1"
+        val ktorVersion = "2.1.2"
+        val napierVersion = "2.6.1"
 
         val commonMain by getting{
             dependencies {
+                // Adaptador de coroutines para disponibilização no java
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4")
+
                 // Napier
-                implementation("io.github.aakira:napier:$napier_version")
+                implementation("io.github.aakira:napier:$napierVersion")
 
                 // Ktor
-                implementation("io.ktor:ktor-client-core:$ktor_version")
-                implementation("io.ktor:ktor-client-logging:$ktor_version")
-                implementation("io.ktor:ktor-client-auth:$ktor_version")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation("io.ktor:ktor-client-auth:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
             }
         }
@@ -61,7 +65,7 @@ kotlin {
         }
         val androidMain by getting{
             dependencies {
-                implementation("io.ktor:ktor-client-okhttp:$ktor_version")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
             }
         }
         val androidTest by getting
@@ -74,7 +78,7 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktor_version")
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
             }
         }
         val iosX64Test by getting
